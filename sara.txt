@@ -1,0 +1,194 @@
+sudo systemctl status k3s
+
+sudo systemctl restart k3s
+
+
+sudo systemctl stop k3s
+
+.................
+restart k3c if failure also for uninstalling and reinstalling
+sudo pkill -f containerd-shim
+
+sudo rm -rf /var/lib/rancher/k3s/server
+
+sudo pkill -f k3s
+sudo pkill -f kubelet
+
+sudo lsof -i :6443
+df -h
+sudo ufw disable  # if UFW is the firewall manager
+......................
+
+solving the permission problem
+
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+
+sudo chown $USER:$USER /etc/rancher/k3s/k3s.yaml
+
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
+source ~/.bashrc  # or source ~/.zshrc if you use zsh
+
+..............
+
+start from scrarch after the failure 
+kubectl delete all --all --all-namespaces
+
+kubectl delete namespace <namespace-name>kubectl get namespaces --no-headers | awk '/default|kube/ {next} {print $1}' | xargs kubectl delete namespace
+
+helm list --all-namespaces -q | xargs -I {} helm uninstall {} --namespace <namespace>
+
+clear chashed data
+ 
+kubectl delete pvc --all --all-namespaces
+ 
+kubectl delete pv --all
+
+mvn clean
+
+docker rm -f k3s-maven-plugin
+
+
+sudo systemctl restart docker
+
+sudo systemctl restart kubelet
+
+......................
+
+mvn clean deploy -Plocal
+
+..............
+checking the log and debug
+
+.................
+
+make docker work without sudo
+
+
+sudo usermod -aG docker datalab
+
+newgrp docker
+
+
+docker --version
+..................
+
+to make persistent stroage
+
+datalab@datalab-1:~/sara/data-space-connector$ sudo nano persistent-volume.yaml
+datalab@datalab-1:~/sara/data-space-connector$ sudo nano persistent-volume-claim.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fiware-data-pv
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/data/fiware-data"  # Local path on your system for persistence
+....................
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fiware-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+..............
+
+
+kubectl apply -f persistent-volume.yaml
+
+kubectl apply -f persistent-volume-claim.yaml
+
+...............
+/var/lib/rancher/k3s
+
+curl -sfL https://get.k3s.io | sh -s - --data-dir /var/lib/rancher/k3s
+
+
+sudo systemctl enable k3s
+
+..........
+resolve the port conflicts
+
+sudo lsof -i :6443
+
+sudo systemctl stop k3s
+
+...................
+
+Change the Port for k3s API Server
+
+
+sudo k3s server --https-listen-port 6444
+
+
+export KUBECONFIG=/home/datalab/sara/data-space-connector/target/k3s.yaml
+
+docker ps -a
+
+docker rm <container_id>
+
+sudo systemctl restart docker
+
+mvn clean deploy -Plocal
+
+...................
+kubectl logs <pod_name> -n <namespace>
+kubectl logs did-helper-7bf56b686f-z9vq8 -n consumer
+
+
+kubectl get pods --all-namespaces
+kubectl top pod --all-namespaces
+
+......................
+
+http://tir.{{host}}.nip.io:{{port}}/v4/issuers
+
+postman env add --name "local_env" --var "host=127.0.0.1" --var "port=8080"
+
+postman api get http://tir.{{host}}.nip.io:{{port}}/v4/issuers --env "local_env"
+.................
+
+the authentication problem could solved with entering username and password
+curl -u username:password -X GET http://tir.127.0.0.1.nip.io:8080/v4/issuers
+
+.............
+
+of bear 
+
+curl -H "Authorization: Bearer YOUR_TOKEN" -X GET http://tir.127.0.0.1.nip.io:8080/v4/issuers
+.............
+
+
+curl -X GET "http://tir.127.0.0.1.nip.io:8080/v4/issuers?api_key=YOUR_API_KEY"
+
+
+....................
+
+curl -H "x-api-key: YOUR_API_KEY" -X GET http://tir.127.0.0.1.nip.io:8080/v4/issuers
+
+
+...............
+
+curl -u admin:password -X GET http://tir.127.0.0.1.nip.io:8080/v4/issuers
+
+.........
+
+general notes
+
+http://keycloak-consumer.127.0.0.1.nip.io:8080/realms/test-realm/protocol/oid4vc/credential-offer/38c9c0c5-f539-4d2f-a961-d2312a38bfaa.84ec8804-b584-4f5d-bf86-bf95116dc670
+
+...................
+
+
