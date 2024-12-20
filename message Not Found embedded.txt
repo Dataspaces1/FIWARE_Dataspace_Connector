@@ -1,0 +1,16 @@
+{
+    "message": "Not Found",
+    "_embedded": {
+        "errors": [
+            {
+                "message": "Page Not Found"
+            }
+        ]
+    },
+    "_links": {
+        "self": {
+            "href": "/v4/issuers%0A",
+            "templated": false
+        }
+    }
+}
