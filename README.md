@@ -89,6 +89,9 @@ This process confirms that the local-path-provisioner is properly configured and
 
 ..............
 
+![image](https://github.com/user-attachments/assets/3d05f044-c15c-4415-b445-f648631eae42)
+
+
 
 
 
