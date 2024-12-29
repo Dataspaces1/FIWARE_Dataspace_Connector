@@ -22,5 +22,6 @@ The FIWARE Dataspace Connector got implemented.
 
 Resources
 1. https://github.com/FIWARE/data-space-connector/blob/main/doc/deployment-integration/local-deployment/LOCAL.MD
-2.
-3.
+2. https://github.com/wistefan/deployment-demo
+3. httpe://github.com/wistefan/presentations
+4. https://github.com/FIWARE/data-space-connector
